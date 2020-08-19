@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/images_2">
+        <file>icons8-trash-24.png</file>
+    </qresource>
+</RCC>
