@@ -8,5 +8,5 @@ Designed using Qt Creator and C++. </br>
 Installer available in the repo. </br>
 CLICK ON THE ICON  BELOW TO WATCH THE VIDEO DEMO!!
 
-[![Watch the video](https://cdn.discordapp.com/attachments/696041247990874132/743924276180025364/icons8-video-64.png)](https://youtu.be/7mmq3IEyqiw)
+[![Watch the video](https://cdn.discordapp.com/attachments/696041247990874132/743924276180025364/icons8-video-64.png)](https://youtu.be/oqPeU1T0t4U)
 
