@@ -5,6 +5,7 @@ Users can record and store audio entries. They can acess and playback their file
 Straightfoward, minimalist UI with good audio recording and playback quality and seamless access makes this app 
 perfect for those looking to begin journaling but would rather sit back and vocalize their thoughts. </br>
 Designed using Qt Creator and C++. </br>
+Installer available in the repo. </br>
 CLICK ON THE ICON  BELOW TO WATCH THE VIDEO DEMO!!
 
 [![Watch the video](https://cdn.discordapp.com/attachments/696041247990874132/743924276180025364/icons8-video-64.png)](https://youtu.be/7mmq3IEyqiw)
