@@ -34,17 +34,20 @@ public:
     QAction *actionStop;
     QAction *actionPlay;
     QAction *actionDelete;
+    QAction *actionHow_to_Use;
     QWidget *centralwidget;
     QGridLayout *gridLayout_2;
-    QSpacerItem *horizontalSpacer_3;
     QPushButton *pauseButton;
-    QCalendarWidget *fileCalender;
-    QSpacerItem *horizontalSpacer_2;
     QGridLayout *gridLayout;
-    QPushButton *clearTimerButton;
-    QPushButton *startButton;
-    QPushButton *stopButton;
     QLCDNumber *lcdNumber;
+    QPushButton *startButton;
+    QPushButton *clearTimerButton;
+    QPushButton *stopButton;
+    QCalendarWidget *fileCalender;
+    QGridLayout *gridLayout_3;
+    QPushButton *pushButton;
+    QSpacerItem *verticalSpacer;
+    QSpacerItem *horizontalSpacer;
     QMenuBar *menubar;
     QMenu *menuFile;
     QStatusBar *statusbar;
@@ -82,14 +85,12 @@ public:
         QIcon icon3;
         icon3.addFile(QString::fromUtf8(":/images/icons8-trash-24.png"), QSize(), QIcon::Normal, QIcon::Off);
         actionDelete->setIcon(icon3);
+        actionHow_to_Use = new QAction(MainWindow);
+        actionHow_to_Use->setObjectName(QString::fromUtf8("actionHow_to_Use"));
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         gridLayout_2 = new QGridLayout(centralwidget);
         gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
-        horizontalSpacer_3 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        gridLayout_2->addItem(horizontalSpacer_3, 10, 5, 1, 1);
-
         pauseButton = new QPushButton(centralwidget);
         pauseButton->setObjectName(QString::fromUtf8("pauseButton"));
         QSizePolicy sizePolicy1(QSizePolicy::Preferred, QSizePolicy::Preferred);
@@ -100,41 +101,41 @@ public:
 
         gridLayout_2->addWidget(pauseButton, 1, 0, 1, 1);
 
-        fileCalender = new QCalendarWidget(centralwidget);
-        fileCalender->setObjectName(QString::fromUtf8("fileCalender"));
-        QSizePolicy sizePolicy2(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
-        sizePolicy2.setHorizontalStretch(0);
-        sizePolicy2.setVerticalStretch(0);
-        sizePolicy2.setHeightForWidth(fileCalender->sizePolicy().hasHeightForWidth());
-        fileCalender->setSizePolicy(sizePolicy2);
-
-        gridLayout_2->addWidget(fileCalender, 3, 5, 1, 1);
-
-        horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        gridLayout_2->addItem(horizontalSpacer_2, 10, 3, 1, 1);
-
         gridLayout = new QGridLayout();
         gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
 
-        gridLayout_2->addLayout(gridLayout, 13, 5, 1, 1);
+        gridLayout_2->addLayout(gridLayout, 14, 3, 1, 1);
 
-        clearTimerButton = new QPushButton(centralwidget);
-        clearTimerButton->setObjectName(QString::fromUtf8("clearTimerButton"));
-        QSizePolicy sizePolicy3(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
-        sizePolicy3.setHorizontalStretch(0);
-        sizePolicy3.setVerticalStretch(0);
-        sizePolicy3.setHeightForWidth(clearTimerButton->sizePolicy().hasHeightForWidth());
-        clearTimerButton->setSizePolicy(sizePolicy3);
+        lcdNumber = new QLCDNumber(centralwidget);
+        lcdNumber->setObjectName(QString::fromUtf8("lcdNumber"));
+        QSizePolicy sizePolicy2(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        sizePolicy2.setHorizontalStretch(0);
+        sizePolicy2.setVerticalStretch(0);
+        sizePolicy2.setHeightForWidth(lcdNumber->sizePolicy().hasHeightForWidth());
+        lcdNumber->setSizePolicy(sizePolicy2);
+        lcdNumber->setMaximumSize(QSize(16777208, 16777206));
+        lcdNumber->setAutoFillBackground(false);
+        lcdNumber->setFrameShape(QFrame::Box);
+        lcdNumber->setLineWidth(3);
 
-        gridLayout_2->addWidget(clearTimerButton, 0, 2, 1, 1);
+        gridLayout_2->addWidget(lcdNumber, 0, 3, 3, 1);
 
         startButton = new QPushButton(centralwidget);
         startButton->setObjectName(QString::fromUtf8("startButton"));
+        QSizePolicy sizePolicy3(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
+        sizePolicy3.setHorizontalStretch(0);
+        sizePolicy3.setVerticalStretch(0);
         sizePolicy3.setHeightForWidth(startButton->sizePolicy().hasHeightForWidth());
         startButton->setSizePolicy(sizePolicy3);
 
         gridLayout_2->addWidget(startButton, 0, 0, 1, 1);
+
+        clearTimerButton = new QPushButton(centralwidget);
+        clearTimerButton->setObjectName(QString::fromUtf8("clearTimerButton"));
+        sizePolicy3.setHeightForWidth(clearTimerButton->sizePolicy().hasHeightForWidth());
+        clearTimerButton->setSizePolicy(sizePolicy3);
+
+        gridLayout_2->addWidget(clearTimerButton, 0, 1, 1, 1);
 
         stopButton = new QPushButton(centralwidget);
         stopButton->setObjectName(QString::fromUtf8("stopButton"));
@@ -143,19 +144,35 @@ public:
 
         gridLayout_2->addWidget(stopButton, 2, 0, 1, 1);
 
-        lcdNumber = new QLCDNumber(centralwidget);
-        lcdNumber->setObjectName(QString::fromUtf8("lcdNumber"));
-        QSizePolicy sizePolicy4(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        fileCalender = new QCalendarWidget(centralwidget);
+        fileCalender->setObjectName(QString::fromUtf8("fileCalender"));
+        QSizePolicy sizePolicy4(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
         sizePolicy4.setHorizontalStretch(0);
         sizePolicy4.setVerticalStretch(0);
-        sizePolicy4.setHeightForWidth(lcdNumber->sizePolicy().hasHeightForWidth());
-        lcdNumber->setSizePolicy(sizePolicy4);
-        lcdNumber->setMaximumSize(QSize(16777208, 16777206));
-        lcdNumber->setAutoFillBackground(false);
-        lcdNumber->setFrameShape(QFrame::Box);
-        lcdNumber->setLineWidth(3);
+        sizePolicy4.setHeightForWidth(fileCalender->sizePolicy().hasHeightForWidth());
+        fileCalender->setSizePolicy(sizePolicy4);
 
-        gridLayout_2->addWidget(lcdNumber, 0, 5, 3, 1);
+        gridLayout_2->addWidget(fileCalender, 4, 3, 1, 1);
+
+        gridLayout_3 = new QGridLayout();
+        gridLayout_3->setObjectName(QString::fromUtf8("gridLayout_3"));
+        pushButton = new QPushButton(centralwidget);
+        pushButton->setObjectName(QString::fromUtf8("pushButton"));
+        sizePolicy2.setHeightForWidth(pushButton->sizePolicy().hasHeightForWidth());
+        pushButton->setSizePolicy(sizePolicy2);
+
+        gridLayout_3->addWidget(pushButton, 2, 0, 1, 1);
+
+        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        gridLayout_3->addItem(verticalSpacer, 0, 0, 1, 1);
+
+        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        gridLayout_3->addItem(horizontalSpacer, 2, 1, 1, 1);
+
+
+        gridLayout_2->addLayout(gridLayout_3, 4, 0, 1, 1);
 
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
@@ -178,6 +195,7 @@ public:
 
         menubar->addAction(menuFile->menuAction());
         menuFile->addAction(actionSet_Directory);
+        menuFile->addAction(actionHow_to_Use);
         audio_playback_bar->addAction(actionPlay);
         audio_playback_bar->addAction(actionPause);
         audio_playback_bar->addAction(actionStop);
@@ -197,10 +215,12 @@ public:
         actionStop->setText(QCoreApplication::translate("MainWindow", "Stop", nullptr));
         actionPlay->setText(QCoreApplication::translate("MainWindow", "Play", nullptr));
         actionDelete->setText(QCoreApplication::translate("MainWindow", "Delete", nullptr));
+        actionHow_to_Use->setText(QCoreApplication::translate("MainWindow", "How to Use", nullptr));
         pauseButton->setText(QCoreApplication::translate("MainWindow", "Pause/Resume", nullptr));
-        clearTimerButton->setText(QCoreApplication::translate("MainWindow", "Clear Timer ", nullptr));
         startButton->setText(QCoreApplication::translate("MainWindow", "Start Record", nullptr));
+        clearTimerButton->setText(QCoreApplication::translate("MainWindow", "Clear Timer ", nullptr));
         stopButton->setText(QCoreApplication::translate("MainWindow", "Stop Record", nullptr));
+        pushButton->setText(QCoreApplication::translate("MainWindow", "How Do I Use This?", nullptr));
         menuFile->setTitle(QCoreApplication::translate("MainWindow", "Options", nullptr));
         audio_playback_bar->setWindowTitle(QCoreApplication::translate("MainWindow", "toolBar_2", nullptr));
     } // retranslateUi

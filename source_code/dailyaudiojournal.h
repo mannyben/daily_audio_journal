@@ -12,6 +12,7 @@
 #include <QSignalMapper>
 #include <QSlider>
 #include <QProgressBar>
+#include "howtousedialog.h"
 
 
 
@@ -19,13 +20,14 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
-class MainWindow : public QMainWindow
+class DailyAudioJournal : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+    DailyAudioJournal(QWidget *parent = nullptr);
+    ~DailyAudioJournal();
+
 
 
     QUrl makeAudioFileUrl(QUrl, QDate date);
@@ -84,6 +86,10 @@ private slots:
 
     void on_actionDelete_triggered();
 
+    void on_actionHow_to_Use_triggered();
+
+    void on_pushButton_released();
+
 private:
     Ui::MainWindow *ui;
 
@@ -119,6 +125,8 @@ private:
     QSlider *slider;
 
     QProgressBar *bar;
+
+    HowtoUseDialog h;
 
 
 

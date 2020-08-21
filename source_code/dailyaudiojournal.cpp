@@ -1,11 +1,11 @@
-#include "mainwindow.h"
+#include "dailyaudiojournal.h"
 #include "ui_mainwindow.h"
 #include <QUrl>
 #include <QDebug>
 #include <QLCDNumber>
 #include <QFileInfo>
 #include <QMessageBox>
-#include "directorysetdialog.h"
+#include <QTextBrowser>
 #include <QDir>
 #include <QFileDialog>
 #include <QTextCharFormat>
@@ -13,7 +13,7 @@
 
 
 
-MainWindow::MainWindow(QWidget *parent)
+DailyAudioJournal::DailyAudioJournal(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 
@@ -26,6 +26,7 @@ MainWindow::MainWindow(QWidget *parent)
     {
 
     initalize_dateRecoringUrlStringMap(dateRecoringUrlStringMap);
+    QHash<QDate, QString>d  = dateRecoringUrlStringMap;
     QUrl temp_url;
     baseUrl = QUrl(getBaseUrlText());
     dateToPlay = QDate::currentDate();
@@ -33,6 +34,7 @@ MainWindow::MainWindow(QWidget *parent)
     DateReplacing = false;
     noRecordingSet = true;
     }
+
 
     //Recording setup
     {
@@ -82,7 +84,7 @@ MainWindow::MainWindow(QWidget *parent)
  * a pointer to the QUrl and the jDate as params.
  * \param jDate - Date that the file will be assocaited with in an integer form
  */
-void MainWindow::StartRecording(int jDate){
+void DailyAudioJournal::StartRecording(int jDate){
 
 
     if (audioRecorder->state() == QMediaRecorder::PausedState) {
@@ -121,7 +123,7 @@ void MainWindow::StartRecording(int jDate){
  * If its in neither state,
  * outputs a QMessageBox:warning stating that audioRecorder has not been initiated by user.
  */
-void MainWindow::pauseResumeRecording(){
+void DailyAudioJournal::pauseResumeRecording(){
 
     if (audioRecorder->state() == QMediaRecorder::RecordingState) {
         audioRecorder->pause();
@@ -140,7 +142,7 @@ void MainWindow::pauseResumeRecording(){
  * \brief Stops audioRecorder and sets time to O Hours, O Minutes, and O Seconds and
  * flags reset boolean as 'true'.
  */
-void MainWindow::stopRecording(){
+void DailyAudioJournal::stopRecording(){
     audioRecorder->stop();
     time->setHMS(0,0,0);
     reset = true;
@@ -149,12 +151,12 @@ void MainWindow::stopRecording(){
 /*!
  * \brief Calls start() for timer with 1000ms
  */
-void MainWindow::startTimer() {
+void DailyAudioJournal::startTimer() {
     this->timer->start(1000);}
 /*!
  * \brief Calls stop() for timer
  */
-void MainWindow::endTimer() {
+void DailyAudioJournal::endTimer() {
     this->timer->stop();
 }
 
@@ -167,7 +169,7 @@ void MainWindow::endTimer() {
  * The int versions of the 3 time poritions are converted to QString.
  * The 3 strings are appended to form time_text which is displayed in the QLCD Number widget.
  */
-void MainWindow::displayTimer() {
+void DailyAudioJournal::displayTimer() {
     if (!reset) {
         time = new QTime(time->addMSecs(1000));
     } else
@@ -198,7 +200,7 @@ void MainWindow::displayTimer() {
  * \param time - The integer represenation of a portion of time.
  * \return -The QString representation of the param time.
  */
-QString  MainWindow::TimetoQString(int &time){
+QString  DailyAudioJournal::TimetoQString(int &time){
     QString tensPlace = "";
 
     //if time is in the single digits, add a extra zero in front of it for good formatting
@@ -215,7 +217,7 @@ QString  MainWindow::TimetoQString(int &time){
  * \param date - Date that the file will be named after
  * \return - QUrl for the file
  */
-QUrl MainWindow::makeAudioFileUrl (QUrl  base_url, QDate date){
+QUrl DailyAudioJournal::makeAudioFileUrl (QUrl  base_url, QDate date){
 
       //int file_number = dateRecoringUrlStringMap.size();
 
@@ -236,7 +238,7 @@ QUrl MainWindow::makeAudioFileUrl (QUrl  base_url, QDate date){
       return file_url;
     }
 
-QUrl MainWindow::getLastAudioFileUrl(QHash <QDate, QString>& dateRecoringUrlStringMap){
+QUrl DailyAudioJournal::getLastAudioFileUrl(QHash <QDate, QString>& dateRecoringUrlStringMap){
 
     QUrl url(dateRecoringUrlStringMap[QDate::currentDate()]);
 
@@ -249,7 +251,7 @@ QUrl MainWindow::getLastAudioFileUrl(QHash <QDate, QString>& dateRecoringUrlStri
  * to form the keys and the values of the dateRecordingUrlStringMap, respectivley.
  * \param dateRecoringUrlStringMap - Map that will be loaded with all the keys and values found on the url_Map.txt file
  */
-void MainWindow::initalize_dateRecoringUrlStringMap(QHash <QDate, QString>& dateRecoringUrlStringMap){
+void DailyAudioJournal::initalize_dateRecoringUrlStringMap(QHash <QDate, QString>& dateRecoringUrlStringMap){
 
   QFile url_Map_file(QDir::currentPath() + "/url_Map.txt");
 
@@ -298,7 +300,7 @@ void MainWindow::initalize_dateRecoringUrlStringMap(QHash <QDate, QString>& date
 * \param file_url_ptr - A pointer to the QUrl of the file that will be associated with the date.
  * \param date - The date to be added to the file as a String.
  */
-void MainWindow::addtoDate_Url_File(QUrl* file_url_ptr, QDate date)
+void DailyAudioJournal::addtoDate_Url_File(QUrl* file_url_ptr, QDate date)
 {
     QString total_url_string;
 
@@ -358,7 +360,7 @@ void MainWindow::addtoDate_Url_File(QUrl* file_url_ptr, QDate date)
  * stating that the Recording Date is set to clickedDate. Otherwise no change on the UI will occur.
  * \param clickedDate - The date which is used to config the buttons and find the url_string value on the dateRecordingUrlStringMap
  */
-void MainWindow::on_fileCalender_clicked(const QDate &clickedDate)
+void DailyAudioJournal::on_fileCalender_clicked(const QDate &clickedDate)
 {
     //A date has been clicked
 
@@ -403,7 +405,7 @@ void MainWindow::on_fileCalender_clicked(const QDate &clickedDate)
  * Connects the stopButton released() with stopRecording().
  * \param date - Date that has been selected
  */
-void MainWindow::configStartStopRecording(QDate date){
+void DailyAudioJournal::configStartStopRecording(QDate date){
 
     connect (ui->startButton, SIGNAL(released()), signalMapperStartRecording, SLOT(map())) ;
 
@@ -420,7 +422,7 @@ void MainWindow::configStartStopRecording(QDate date){
  * \brief Removes connect between startButton, pasuseButton, and stopButton relased() signals
  * and the slots the were associated with in configStartStopRecording(int).
  */
-void MainWindow::unconfigStartStopRecording(){
+void DailyAudioJournal::unconfigStartStopRecording(){
     disconnect (ui->startButton, SIGNAL(released()), signalMapperStartRecording, SLOT(map())) ;
 
     disconnect (signalMapperStartRecording, SIGNAL(mapped(int)), this, SLOT(StartRecording(int))) ;
@@ -434,11 +436,17 @@ void MainWindow::unconfigStartStopRecording(){
  * \brief Opens up the base_directory_file and reads in the baseUrlText QString.
  * \return -The baseUrlText QString as read from the file.
  */
-QString MainWindow::getBaseUrlText(){
+QString DailyAudioJournal::getBaseUrlText(){
 
     QString baseUrlText = "";
+    QString temp = "";
+
+
+
 
     QFile base_directory_file(QDir::currentPath() + "/base_directory.txt");
+
+
 
     if (base_directory_file.size() != 0) //checking if the file is empty or not
         {
@@ -446,17 +454,21 @@ QString MainWindow::getBaseUrlText(){
                 QMessageBox::warning(this,"title","base_directory.txt not open");
 
             else  //File has been opened for reading and now will be read from line-by-line and each line will be converted to QUrl and pushed_back into dateRecoringUrlStringMap;
-                {
+               {
                     QTextStream in(& base_directory_file);
                     while (!in.atEnd())
                         {
-                            baseUrlText = in.readLine();
+                            temp = in.readLine();
+                            if (temp.compare("") != 0 && temp.compare("/") != 0 && temp.compare(" ") != 0) {
+                                baseUrlText = temp;
+                            }
+
+
 
                         }
                              base_directory_file.close();
 
                  }
-
           }
 
     else {
@@ -468,13 +480,13 @@ QString MainWindow::getBaseUrlText(){
     return baseUrlText;
 }
 
-MainWindow::~MainWindow()
+DailyAudioJournal::~DailyAudioJournal()
 {
     delete ui;
 }
 
 
-void MainWindow::on_actionSet_Directory_triggered()
+void DailyAudioJournal::on_actionSet_Directory_triggered()
 {
 
 
@@ -487,24 +499,28 @@ void MainWindow::on_actionSet_Directory_triggered()
  * Else, a QMessageBox:warning informs user that the directory is invalid and continues the loop.
  * \return
  */
-QString MainWindow::set_or_update_base_url_file(){
+QString DailyAudioJournal::set_or_update_base_url_file(){
 
     QString baseUrl_name;
 
+
     while (1) {
-    QMessageBox::information(this,"Directory Setting",
+        QMessageBox::information(this,"Directory Setting",
                              "Please create or select a directory to store all your recording files!");
-    baseUrl_name = (QFileDialog::getExistingDirectory(this, tr("Set Directory"),
+        baseUrl_name = (QFileDialog::getExistingDirectory(this, tr("Set Directory"),
                                                         QDir::homePath(),
                                                         QFileDialog::ShowDirsOnly
 
-                                                        | QFileDialog::DontResolveSymlinks))  + "/";
+                                                        | QFileDialog::DontResolveSymlinks)) + "/";
 
-    if (baseUrl_name.indexOf(" ") >= 0)
-        QMessageBox::warning(this,"Directory Invalid",
+        if (baseUrl_name.indexOf(" ") >= 0)
+            QMessageBox::warning(this,"Directory Invalid",
                              "This directory has invalid characters, make sure your directory has no spaces or invalid characters!");
-    else
-       break;
+//        else if (baseUrl_name.compare("") == 0)
+//            QMessageBox::warning(this,"No Directory Selected",
+//                             "You didn't select a directory, please do so!");
+        else
+            break;
     }
 
 
@@ -539,7 +555,7 @@ QString MainWindow::set_or_update_base_url_file(){
  * \param file_url_string
  * \param date
  */
-void MainWindow::addTodateRecordingUrlStringMap(QString file_url_string, QDate date) {
+void DailyAudioJournal::addTodateRecordingUrlStringMap(QString file_url_string, QDate date) {
 
     if (!dateRecoringUrlStringMap.contains(date)
             || dateRecoringUrlStringMap[date] == nullptr || dateRecoringUrlStringMap[date] == "[deleted]"){
@@ -557,6 +573,9 @@ void MainWindow::addTodateRecordingUrlStringMap(QString file_url_string, QDate d
         if (replaceRecording == QMessageBox::Yes){
             qDebug() << "Replacing recording for " + getFromdateRecoringUrlStringMap(date);
             dateRecoringUrlStringMap[date] = file_url_string;
+            QFile fileToDelete(dateRecoringUrlStringMap[dateToPlay]);
+            if (fileToDelete.remove())
+                QMessageBox::information(this,"Previous Entry Removed", "Previous entry has been removed!");
             unconfigStartStopRecording();
             configStartStopRecording(date);
             DateMaking = false;
@@ -581,7 +600,7 @@ void MainWindow::addTodateRecordingUrlStringMap(QString file_url_string, QDate d
  * \param date
  * \return 
  */
-QString MainWindow::getFromdateRecoringUrlStringMap(QDate date){
+QString DailyAudioJournal::getFromdateRecoringUrlStringMap(QDate date){
     if (dateRecoringUrlStringMap.contains(date))
         return dateRecoringUrlStringMap[date];
     else
@@ -592,7 +611,7 @@ QString MainWindow::getFromdateRecoringUrlStringMap(QDate date){
  * \brief Shades a date cell into a yellow color.
  * \param date - The date whose assoicated cell is to be shaded.
  */
-void MainWindow::shadeDateCell(QDate date){
+void DailyAudioJournal::shadeDateCell(QDate date){
 
    QTextCharFormat format;
    format.setBackground(Qt::yellow);
@@ -603,7 +622,7 @@ void MainWindow::shadeDateCell(QDate date){
  * \brief Removes shading from a date cell.
  * \param date - The date whose associated cell is to be unshaded. 
  */
-void MainWindow::unshadeDateCell(QDate date){
+void DailyAudioJournal::unshadeDateCell(QDate date){
     QTextCharFormat format;
     format.setBackground(Qt::transparent);
     ui->fileCalender->setDateTextFormat(date, format);
@@ -613,7 +632,7 @@ void MainWindow::unshadeDateCell(QDate date){
  * \brief Resets the time object. Reset bool is set to true.
  * Timer displays reset time.
  */
-void MainWindow::on_clearTimerButton_released()
+void DailyAudioJournal::on_clearTimerButton_released()
 {
 
     time->setHMS(0,0,0);
@@ -627,7 +646,7 @@ void MainWindow::on_clearTimerButton_released()
  * and "Paused..." message shown.
  * Otherwise "No Entry Recorded is shown". 
  */
-void MainWindow::on_actionPause_triggered()
+void DailyAudioJournal::on_actionPause_triggered()
 {
     audioPlayer->pause();
 
@@ -642,7 +661,7 @@ void MainWindow::on_actionPause_triggered()
  * and "Stopped" message is shown.
  * Otherwise "No Entry Recorded is shown".
  */
-void MainWindow::on_actionStop_triggered()
+void DailyAudioJournal::on_actionStop_triggered()
 {
     audioPlayer->stop();
     if (noRecordingSet)
@@ -656,7 +675,7 @@ void MainWindow::on_actionStop_triggered()
  * and "Playing" message is shown.
  * Otherwise "No Entry Recorded is shown".
  */
-void MainWindow::on_actionPlay_triggered()
+void DailyAudioJournal::on_actionPlay_triggered()
 {
     audioPlayer->play();
     if (noRecordingSet)
@@ -676,7 +695,7 @@ void MainWindow::on_actionPlay_triggered()
  * If there is no valid Url on the DateRecordingUrlStringMap, then a MessageBox informing the user
  * of this is projected.
  */
-void MainWindow::on_actionDelete_triggered()
+void DailyAudioJournal::on_actionDelete_triggered()
 {
    if (audioPlayer->state() == QMediaPlayer::PlayingState)
         audioPlayer->pause();
@@ -713,4 +732,15 @@ void MainWindow::on_actionDelete_triggered()
     else
         QMessageBox::information(this,"No Entry Recorded", "There is no recording for " + dateToPlay.toString() + " !");
 
+}
+
+void DailyAudioJournal::on_actionHow_to_Use_triggered()
+{
+
+    h.exec();
+}
+
+void DailyAudioJournal::on_pushButton_released()
+{
+    h.exec();
 }
